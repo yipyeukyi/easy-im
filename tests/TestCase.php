@@ -9,6 +9,7 @@ namespace whereof\easyIm\Tests;
 
 use GuzzleHttp\Client;
 use whereof\easyIm\Factory;
+use whereof\Helper\StrHelper;
 
 /**
  * Class TestCase
@@ -35,12 +36,13 @@ class TestCase extends \PHPUnit\Framework\TestCase
      */
     public function Huanxin()
     {
-        $config = [
-            'appKey'       => '',
-            'clientId'     => '',
-            'clientSecret' => '',
-            'orgName'      => '',
-            'appName'      => '',
+        $orgName = StrHelper::randString(16, 1);
+        $config  = [
+            'appKey'       => $orgName . '#demo',
+            'clientId'     => StrHelper::randString(26),
+            'clientSecret' => StrHelper::randString(31),
+            'orgName'      => $orgName,
+            'appName'      => 'demo',
         ];
         return Factory::Huanxin($config);
     }
@@ -51,8 +53,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function Jiguang()
     {
         $config = [
-            'appKey'       => '',
-            'masterSecret' => '',
+            'appKey'       => StrHelper::randString(24),
+            'masterSecret' => StrHelper::randString(24),
         ];
         return Factory::Jiguang($config);
     }
@@ -63,8 +65,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function RongCloud()
     {
         $config = [
-            'appKey'    => '',
-            'appSecret' => '',
+            'appKey'    => StrHelper::randString(13),
+            'appSecret' => StrHelper::randString(14),
         ];
         return Factory::RongCloud($config);
     }
@@ -88,8 +90,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function Yunxin()
     {
         $config = [
-            'appKey'    => '',
-            'appSecret' => '',
+            'appKey'    => StrHelper::randString(32),
+            'appSecret' => StrHelper::randString(12),
         ];
         return Factory::Yunxin($config);
     }

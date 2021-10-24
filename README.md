@@ -31,6 +31,12 @@
 composer require whereof/easy-im
 ~~~~
 
+## 请求日志开启
+
+~~~
+\whereof\easyIm\Kernel\BaseClient::$request_log=true;
+~~~
+
 ## 案例
 
 ### [腾讯IM](https://cloud.tencent.com/product/im) 

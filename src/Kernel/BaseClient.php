@@ -9,6 +9,7 @@ namespace whereof\easyIm\Kernel;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use whereof\Logger\Logger;
 
 /**
  * Class BaseClient
@@ -17,6 +18,10 @@ use GuzzleHttp\Exception\GuzzleException;
  */
 class BaseClient
 {
+    /**
+     * @var bool
+     */
+    public static $request_log = false;
     /**
      * @var ServiceContainer
      */
@@ -94,8 +99,10 @@ class BaseClient
      */
     protected function httpRequest($method, $url, $options)
     {
-        $resp = $this->httpClient()->request($method, $url, $options);
-        return $resp->getBody()->getContents();
+        $output = $this->httpClient()->request($method, $url, $options);
+        $resp   = $output->getBody()->getContents();
+        $this->log($method . ':' . $url, ['request' => $options, 'response' => $resp]);
+        return $resp;
     }
 
     /**
@@ -104,5 +111,16 @@ class BaseClient
     protected function httpClient()
     {
         return new Client($this->config['http'] ?? []);
+    }
+
+    /**
+     * @param $message
+     * @param array $context
+     */
+    protected function log($message, $context = [])
+    {
+        BaseClient::$request_log && Logger::File([
+            'logfile' => './.runtime/easy-im.log',
+        ])->debug($message, $context);
     }
 }

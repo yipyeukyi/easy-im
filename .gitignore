@@ -4,5 +4,6 @@
 /.idea
 /composer.lock
 /.cache
+/.runtime
 .php_cs.cache
 .phpunit.result.cache
