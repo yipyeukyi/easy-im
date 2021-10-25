@@ -1,5 +1,5 @@
 <p align="center">
-	<strong>非官方即时通信IM easy-im</strong>
+	<strong>非官方即时通信SDK easy-im</strong>
 </p>
 
 <p align="center">
