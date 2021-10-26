@@ -26,7 +26,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
      */
     public function mockApiClient($name, $app)
     {
-        $client = \Mockery::mock($name, [$app])->makePartial();
+        \whereof\easyIm\Kernel\BaseClient::$request_log = true;
+        $client                                         = \Mockery::mock($name, [$app])->makePartial();
         $client->allows()->getHttpClient()->andReturn(\Mockery::mock(Client::class));
         return $client;
     }

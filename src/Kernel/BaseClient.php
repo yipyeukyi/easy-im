@@ -119,8 +119,9 @@ class BaseClient
      */
     protected function log($message, $context = [])
     {
-        BaseClient::$request_log && Logger::File([
+        $conf = array_merge($this->config['log'], [
             'logfile' => './.runtime/easy-im.log',
-        ])->debug($message, $context);
+        ]);
+        BaseClient::$request_log && Logger::File($conf)->debug($message, $context);
     }
 }
