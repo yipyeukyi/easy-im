@@ -1,17 +1,16 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:44
  */
 
 namespace whereof\easyIm\Tests;
 
-
 /**
- * Class FactoryTest
+ * Class FactoryTest.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Tests
  */
 class FactoryTest extends TestCase
 {

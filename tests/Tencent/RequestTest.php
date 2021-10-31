@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 18:04
  */
@@ -14,13 +14,13 @@ class RequestTest extends TestCase
 {
     public function testAccountImport()
     {
-        $app    = $this->Tencent();
+        $app = $this->Tencent();
         $client = $this->mockApiClient(TencentClient::class, $app);
         $params = [
-            'Identifier' => 'test'
+            'Identifier' => 'test',
         ];
-        $resp   = $client->send('im_open_login_svc/account_import', $params);
-        $data   = json_decode($resp, true);
+        $resp = $client->send('im_open_login_svc/account_import', $params);
+        $data = json_decode($resp, true);
         $this->assertIsArray($data);
     }
 }

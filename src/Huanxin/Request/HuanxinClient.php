@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:19
  */
@@ -21,9 +21,9 @@ use whereof\easyIm\Kernel\BaseClient;
  *  'orgName' => '',
  *  'appName' => '',
  * ];
- * Class HuanxinClient
+ * Class HuanxinClient.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Huanxin\Request
  */
 class HuanxinClient extends BaseClient
 {
@@ -32,18 +32,19 @@ class HuanxinClient extends BaseClient
      */
     protected $host = 'https://a1.easemob.com';
 
-
     /**
      * @param string $method
      * @param string $action
-     * @param array $params
-     * @param bool $headerVerify
-     * @return string
+     * @param array  $params
+     * @param bool   $headerVerify
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     public function send(string $method, string $action, array $params = [], $headerVerify = true)
     {
-        $url     = $this->buildHost() . $action;
+        $url = $this->buildHost().$action;
         $options = [];
         if ($headerVerify) {
             $options['headers'] = $this->buildHeaders();
@@ -57,22 +58,23 @@ class HuanxinClient extends BaseClient
             $options['body'] = json_encode($params);
         }
         $this->config['http']['http_errors'] = false;
-        return $this->httpRequest($method, $url, $options);
 
+        return $this->httpRequest($method, $url, $options);
     }
 
-
     /**
-     * @return string
      * @throws GuzzleException
+     *
+     * @return string
      */
     public function getToken()
     {
         $params = [
             'grant_type'    => 'client_credentials',
             'client_id'     => $this->config['clientId'],
-            'client_secret' => $this->config['clientSecret']
+            'client_secret' => $this->config['clientSecret'],
         ];
+
         return $this->send('post', 'token', $params, false);
     }
 
@@ -82,30 +84,31 @@ class HuanxinClient extends BaseClient
     protected function buildHost()
     {
         return $this->config['host'] ?? $this->host
-            . '/' . $this->config['orgName']
-            . '/' . $this->config['appName']
-            . '/';
+            .'/'.$this->config['orgName']
+            .'/'.$this->config['appName']
+            .'/';
     }
 
-
     /**
-     * @return array
      * @throws GuzzleException
+     *
+     * @return array
      */
     protected function buildHeaders()
     {
-        $cahceKey = md5('client_credentials' .
-            $this->config['appKey'] .
-            $this->config['clientId'] .
+        $cahceKey = md5('client_credentials'.
+            $this->config['appKey'].
+            $this->config['clientId'].
             $this->config['clientSecret']);
         if (!$this->app->cache->hasCache($cahceKey)) {
-            $tokens    = $this->getToken();
+            $tokens = $this->getToken();
             $tokensArr = json_decode($tokens, true);
             $this->app->cache->setCache($cahceKey, $tokensArr['access_token'], $tokensArr['expires_in']);
         }
         $token = $this->app->cache->getCache($cahceKey);
+
         return [
-            'Authorization' => "Bearer {$token}"
+            'Authorization' => "Bearer {$token}",
         ];
     }
 }

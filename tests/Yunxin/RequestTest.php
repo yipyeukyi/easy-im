@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 18:43
  */
@@ -14,13 +14,13 @@ class RequestTest extends TestCase
 {
     public function testUserCreate()
     {
-        $app    = $this->Yunxin();
+        $app = $this->Yunxin();
         $client = $this->mockApiClient(YunxinClient::class, $app);
         $params = [
             'accid' => 'easyim',
         ];
-        $resp   = $client->send('nimserver/user/create.action', $params);
-        $data   = json_decode($resp, true);
+        $resp = $client->send('nimserver/user/create.action', $params);
+        $data = json_decode($resp, true);
         $this->assertIsArray($data);
     }
 }

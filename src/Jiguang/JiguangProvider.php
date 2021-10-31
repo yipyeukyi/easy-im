@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:27
  */
@@ -12,9 +12,9 @@ use Pimple\ServiceProviderInterface;
 use whereof\easyIm\Jiguang\Request\JiguangClient;
 
 /**
- * Class JiguangProvider
+ * Class JiguangProvider.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Jiguang
  */
 class JiguangProvider implements ServiceProviderInterface
 {

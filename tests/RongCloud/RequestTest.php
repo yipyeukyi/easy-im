@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 18:41
  */
@@ -14,13 +14,13 @@ class RequestTest extends TestCase
 {
     public function testGetToken()
     {
-        $app    = $this->RongCloud();
+        $app = $this->RongCloud();
         $client = $this->mockApiClient(RongCloudClient::class, $app);
         $params = [
             'userId' => 'test',
         ];
-        $resp   = $client->send('user/getToken.json', $params);
-        $data   = json_decode($resp, true);
+        $resp = $client->send('user/getToken.json', $params);
+        $data = json_decode($resp, true);
         $this->assertIsArray($data);
     }
 }

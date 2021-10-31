@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:43
  */
@@ -12,23 +12,24 @@ use whereof\easyIm\Factory;
 use whereof\Helper\StrHelper;
 
 /**
- * Class TestCase
+ * Class TestCase.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Tests
  */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @param $name
      * @param $app
+     *
      * @return \Mockery\Mock
      */
     public function mockApiClient($name, $app)
     {
         \whereof\easyIm\Kernel\BaseClient::$request_log = true;
-        $client                                         = \Mockery::mock($name, [$app])->makePartial();
+        $client = \Mockery::mock($name, [$app])->makePartial();
         $client->allows()->getHttpClient()->andReturn(\Mockery::mock(Client::class));
+
         return $client;
     }
 
@@ -38,13 +39,14 @@ class TestCase extends \PHPUnit\Framework\TestCase
     public function Huanxin()
     {
         $orgName = StrHelper::randString(16, 1);
-        $config  = [
-            'appKey'       => $orgName . '#demo',
+        $config = [
+            'appKey'       => $orgName.'#demo',
             'clientId'     => StrHelper::randString(26),
             'clientSecret' => StrHelper::randString(31),
             'orgName'      => $orgName,
             'appName'      => 'demo',
         ];
+
         return Factory::Huanxin($config);
     }
 
@@ -57,6 +59,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
             'appKey'       => StrHelper::randString(24),
             'masterSecret' => StrHelper::randString(24),
         ];
+
         return Factory::Jiguang($config);
     }
 
@@ -69,6 +72,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
             'appKey'    => StrHelper::randString(13),
             'appSecret' => StrHelper::randString(14),
         ];
+
         return Factory::RongCloud($config);
     }
 
@@ -82,6 +86,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
             'identifier' => 'administrator',
             'secretKey'  => 'nfugb53xtlhyfq2kgiriganruyoagh93it1zwysmh2tmj5tnnmuqhd2og5ofktjt',
         ];
+
         return Factory::Tencent($config);
     }
 
@@ -94,6 +99,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
             'appKey'    => StrHelper::randString(32),
             'appSecret' => StrHelper::randString(12),
         ];
+
         return Factory::Yunxin($config);
     }
 }

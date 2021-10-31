@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:27
  */
@@ -10,9 +10,10 @@ namespace whereof\easyIm\Jiguang;
 use whereof\easyIm\Kernel\ServiceContainer;
 
 /**
- * Class AppContainer
+ * Class AppContainer.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Jiguang
+ *
  * @property Request\JiguangClient request
  */
 class AppContainer extends ServiceContainer

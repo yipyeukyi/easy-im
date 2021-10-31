@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:34
  */
@@ -11,18 +11,17 @@ use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
 
 /**
- *
  * 融云IM 即时通讯客户端
  * https://www.rongcloud.cn/product/im
- * https://docs.rongcloud.cn/v4/views/im/server/security/include.html
+ * https://docs.rongcloud.cn/v4/views/im/server/security/include.html.
  *
  * $config = [
  *  'appKey' => '',
  *  'appSecret' => '',
  * ]
  * Class RongCloudClient
+ *
  * @author zhiqiang
- * @package whereof\easyIm\RongCloud\Request
  */
 class RongCloudClient extends BaseClient
 {
@@ -34,15 +33,18 @@ class RongCloudClient extends BaseClient
     /**
      * @param $action
      * @param $params
-     * @return string
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     public function send($action, $params)
     {
         $this->config['http']['http_errors'] = false;
 
-        $url     = $this->config["host"] ?? $this->host . '/' . $action;
+        $url = $this->config['host'] ?? $this->host.'/'.$action;
         $headers = $this->buildHeaders();
+
         return $this->httpPost($url, $params, $headers);
     }
 
@@ -51,15 +53,16 @@ class RongCloudClient extends BaseClient
      */
     protected function buildHeaders()
     {
-        $nonce     = mt_rand();
+        $nonce = mt_rand();
         $timeStamp = time();
-        $sign      = sha1($this->config["appSecret"] . $nonce . $timeStamp);
+        $sign = sha1($this->config['appSecret'].$nonce.$timeStamp);
+
         return [
-            'RC-AppContainer-Key' => $this->config["appKey"],
+            'RC-AppContainer-Key' => $this->config['appKey'],
             'RC-Nonce'            => $nonce,
             'RC-Timestamp'        => $timeStamp,
             'RC-Signature'        => $sign,
-            'Content-Type'        => ' application/x-www-form-urlencoded'
+            'Content-Type'        => ' application/x-www-form-urlencoded',
         ];
     }
 }

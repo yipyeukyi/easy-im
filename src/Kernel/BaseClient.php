@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 15:08
  */
@@ -12,9 +12,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use whereof\Logger\Logger;
 
 /**
- * Class BaseClient
+ * Class BaseClient.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Kernel
  */
 class BaseClient
 {
@@ -33,20 +33,23 @@ class BaseClient
 
     /**
      * BaseClient constructor.
+     *
      * @param ServiceContainer $app
      */
     public function __construct(ServiceContainer $app)
     {
-        $this->app    = $app;
+        $this->app = $app;
         $this->config = $app->getConfig();
     }
 
     /**
      * @param string $url
-     * @param array $query
-     * @param array $headers
-     * @return string
+     * @param array  $query
+     * @param array  $headers
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     protected function httpGet(string $url, array $query = [], array $headers = [])
     {
@@ -54,15 +57,18 @@ class BaseClient
             'headers' => $headers,
             'query'   => $query,
         ];
+
         return $this->httpRequest('GET', $url, $options);
     }
 
     /**
      * @param string $url
-     * @param array $params
-     * @param array $headers
-     * @return string
+     * @param array  $params
+     * @param array  $headers
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     protected function httpPost(string $url, array $params = [], array $headers = [])
     {
@@ -70,16 +76,18 @@ class BaseClient
             'headers'     => $headers,
             'form_params' => $params,
         ];
+
         return $this->httpRequest('POST', $url, $options);
     }
 
-
     /**
      * @param string $url
-     * @param array $params
-     * @param array $headers
-     * @return string
+     * @param array  $params
+     * @param array  $headers
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     protected function httpPostJson(string $url, array $params = [], array $headers = [])
     {
@@ -87,6 +95,7 @@ class BaseClient
             'headers' => $headers,
             'json'    => $params,
         ];
+
         return $this->httpRequest('POST', $url, $options);
     }
 
@@ -94,14 +103,17 @@ class BaseClient
      * @param $method
      * @param $url
      * @param $options
-     * @return string
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     protected function httpRequest($method, $url, $options)
     {
         $output = $this->httpClient()->request($method, $url, $options);
-        $resp   = $output->getBody()->getContents();
-        $this->log($method . ':' . $url, ['request' => $options, 'response' => $resp]);
+        $resp = $output->getBody()->getContents();
+        $this->log($method.':'.$url, ['request' => $options, 'response' => $resp]);
+
         return $resp;
     }
 
