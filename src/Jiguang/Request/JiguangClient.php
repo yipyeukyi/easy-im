@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 17:28
  */
@@ -19,9 +19,9 @@ use whereof\easyIm\Kernel\BaseClient;
  *   'appKey'       => '',
  *   'masterSecret' => '',
  * ];
- * Class JiguangClient
+ * Class JiguangClient.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Jiguang\Request
  */
 class JiguangClient extends BaseClient
 {
@@ -39,13 +39,15 @@ class JiguangClient extends BaseClient
      * @param $method
      * @param $action
      * @param array $params
-     * @param bool $report
-     * @return string
+     * @param bool  $report
+     *
      * @throws GuzzleException
+     *
+     * @return string
      */
     public function send($method, $action, array $params = [], $report = false)
     {
-        $url    = $this->buildHost($action, $report);
+        $url = $this->buildHost($action, $report);
         $method = strtoupper($method);
         if ($method == 'UPLOAD') {
             return $this->upload($url, $params['file']);
@@ -57,25 +59,27 @@ class JiguangClient extends BaseClient
             $options['json'] = $params;
         }
         $this->config['http']['http_errors'] = false;
+
         return $this->httpRequest($method, $url, $options);
     }
 
-
     /**
-     * 资源上传
+     * 资源上传.
+     *
      * @param $uri
      * @param $filepath
+     *
      * @return bool|string
      */
     private function upload($uri, $filepath)
     {
-        $ch      = curl_init();
-        $options = array(
+        $ch = curl_init();
+        $options = [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => true,
             CURLOPT_HTTPHEADER     => [
                 'Content-Type: multipart/form-data',
-                'Connection: Keep-Alive'
+                'Connection: Keep-Alive',
             ],
             CURLOPT_USERAGENT      => 'JMessage-Api-easyIm-php-Client',
             CURLOPT_CONNECTTIMEOUT => 20,
@@ -85,35 +89,37 @@ class JiguangClient extends BaseClient
             CURLOPT_URL            => $uri,
             CURLOPT_CUSTOMREQUEST  => 'POST',
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => 0
-        );
+            CURLOPT_SSL_VERIFYHOST => 0,
+        ];
         if (class_exists('\CURLFile')) {
             $options[CURLOPT_SAFE_UPLOAD] = true;
-            $options[CURLOPT_POSTFIELDS]  = ['filename' => new \CURLFile($filepath)];
+            $options[CURLOPT_POSTFIELDS] = ['filename' => new \CURLFile($filepath)];
         } else {
             if (defined('CURLOPT_SAFE_UPLOAD')) {
                 $options[CURLOPT_SAFE_UPLOAD] = false;
             }
-            $options[CURLOPT_POSTFIELDS] = ['filename' => '@' . $filepath];
+            $options[CURLOPT_POSTFIELDS] = ['filename' => '@'.$filepath];
         }
         curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
         curl_close($ch);
+
         return $output;
     }
-
 
     /**
      * @param $action
      * @param bool $report
+     *
      * @return string
      */
     private function buildHost($action, $report = false)
     {
         if ($report) {
-            return $this->config['reportHost'] ?? $this->reportHost . '/' . $action;
+            return $this->config['reportHost'] ?? $this->reportHost.'/'.$action;
         }
-        return $this->config['host'] ?? $this->host . '/' . $action;
+
+        return $this->config['host'] ?? $this->host.'/'.$action;
     }
 
     /**
@@ -124,7 +130,7 @@ class JiguangClient extends BaseClient
         return [
             'auth'    => [
                 $this->config['appKey'],
-                $this->config['masterSecret']
+                $this->config['masterSecret'],
             ],
             'headers' => [
                 'Connection'   => 'Keep-Alive',
@@ -139,6 +145,6 @@ class JiguangClient extends BaseClient
      */
     private function getAuth()
     {
-        return $this->config['appKey'] . ':' . $this->config['masterSecret'];
+        return $this->config['appKey'].':'.$this->config['masterSecret'];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 15:14
  */
@@ -12,9 +12,9 @@ use Pimple\ServiceProviderInterface;
 use whereof\easyIm\Kernel\Clients\CacheClient;
 
 /**
- * Class ServiceProvider
+ * Class ServiceProvider.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Kernel
  */
 class ServiceProvider implements ServiceProviderInterface
 {

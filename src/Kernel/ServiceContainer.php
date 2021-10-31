@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 15:11
  */
@@ -10,9 +10,10 @@ namespace whereof\easyIm\Kernel;
 use Pimple\Container;
 
 /**
- * Class ServiceContainer
+ * Class ServiceContainer.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Kernel
+ *
  * @property Clients\CacheClient cache
  */
 class ServiceContainer extends Container
@@ -32,6 +33,7 @@ class ServiceContainer extends Container
 
     /**
      * ServiceContainer constructor.
+     *
      * @param array $userConfig
      * @param array $values
      */
@@ -51,13 +53,15 @@ class ServiceContainer extends Container
             // http://docs.guzzlephp.org/en/stable/request-options.html
             'http' => [
                 'timeout' => 30.0,
-            ]
+            ],
         ];
+
         return array_replace_recursive($base, $this->defaultConfig, $this->userConfig);
     }
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function __get($id)
@@ -80,7 +84,7 @@ class ServiceContainer extends Container
     public function getProviders()
     {
         return array_merge($this->providers, [
-            ServiceProvider::class
+            ServiceProvider::class,
         ]);
     }
 

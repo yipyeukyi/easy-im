@@ -1,6 +1,6 @@
 <?php
 /*
- * Desc: 
+ * Desc:
  * User: zhiqiang
  * Date: 2021-10-17 15:13
  */
@@ -12,17 +12,19 @@ use whereof\Cache\DriverAbstract;
 use whereof\easyIm\Kernel\BaseClient;
 
 /**
- * Class CacheClient
+ * Class CacheClient.
+ *
  * @author zhiqiang
- * @package whereof\easyIm\Kernel\Clients
  */
 class CacheClient extends BaseClient
 {
     /**
-     * 设置缓存
+     * 设置缓存.
+     *
      * @param $key
      * @param $value
      * @param int $ttl
+     *
      * @return bool
      */
     public function setCache($key, $value, $ttl = 0)
@@ -31,8 +33,10 @@ class CacheClient extends BaseClient
     }
 
     /**
-     * 获取缓存
+     * 获取缓存.
+     *
      * @param $key
+     *
      * @return mixed
      */
     public function getCache($key)
@@ -41,8 +45,10 @@ class CacheClient extends BaseClient
     }
 
     /**
-     * 判断缓存是否存在
+     * 判断缓存是否存在.
+     *
      * @param $key
+     *
      * @return mixed
      */
     public function hasCache($key)
@@ -51,15 +57,16 @@ class CacheClient extends BaseClient
     }
 
     /**
-     * 删除缓存
+     * 删除缓存.
+     *
      * @param $key
+     *
      * @return bool
      */
     public function deleteCache($key)
     {
         return $this->getSystemAdapter()->delete($key);
     }
-
 
     /**
      * @return DriverAbstract
