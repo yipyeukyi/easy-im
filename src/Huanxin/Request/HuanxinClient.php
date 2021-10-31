@@ -9,6 +9,7 @@ namespace whereof\easyIm\Huanxin\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
+use whereof\easyIm\Kernel\Support\Str;
 
 /**
  *  环信即时通讯云
@@ -30,7 +31,7 @@ class HuanxinClient extends BaseClient
     /**
      * @var string
      */
-    protected $host = 'https://a1.easemob.com';
+    public static $host = 'https://a1.easemob.com';
 
     /**
      * @param string $method
@@ -44,7 +45,7 @@ class HuanxinClient extends BaseClient
      */
     public function send(string $method, string $action, array $params = [], $headerVerify = true)
     {
-        $url = $this->buildHost().$action;
+        $url = $this->buildHost().Str::removeFristSlash($action);
         $options = [];
         if ($headerVerify) {
             $options['headers'] = $this->buildHeaders();
@@ -83,10 +84,7 @@ class HuanxinClient extends BaseClient
      */
     protected function buildHost()
     {
-        return $this->config['host'] ?? $this->host
-            .'/'.$this->config['orgName']
-            .'/'.$this->config['appName']
-            .'/';
+        return HuanxinClient::$host.'/'.$this->config['orgName'].'/'.$this->config['appName'].'/';
     }
 
     /**

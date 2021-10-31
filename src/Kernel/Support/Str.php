@@ -2,44 +2,27 @@
 /*
  * Desc:
  * User: zhiqiang
- * Date: 2021-10-18 23:25
+ * Date: 2021-10-26 00:01
  */
 
 namespace whereof\easyIm\Kernel\Support;
 
 /**
  * Class Str.
- *
  * @author zhiqiang
  */
 class Str
 {
     /**
-     * @return float|int
+     * 去掉第一位为/字符串.
+     * @param $str
+     * @return bool|string
      */
-    public static function microTime()
+    public static function removeFristSlash($str)
     {
-        return microtime(true) * 10000;
-    }
-
-    /**
-     * @param null $s
-     * @param null $e
-     * @param bool $timestamp
-     *
-     * @return array
-     */
-    public static function beginEndTime($s = null, $e = null, $timestamp = false)
-    {
-        $s = $s ?? time();
-        $e = $e ?? strtotime(date('Y-m-d H:i:s', strtotime('-7 day')));
-        if ($timestamp) {
-            return [
-                date('Y-m-d H:i:s', $s),
-                date('Y-m-d H:i:s', $e),
-            ];
+        if (substr($str, 0, 1) === '/') {
+            return substr($str, 1);
         }
-
-        return [$s, $e];
+        return $str;
     }
 }

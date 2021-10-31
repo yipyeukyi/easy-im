@@ -7,8 +7,10 @@
 
 namespace whereof\easyIm\Jiguang\Request;
 
+use CURLFile;
 use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
+use whereof\easyIm\Kernel\Support\Str;
 
 /**
  * Class JiguangClient
@@ -28,26 +30,26 @@ class JiguangClient extends BaseClient
     /**
      * @var string
      */
-    protected $host = 'https://api.im.jpush.cn';
+    public static $host = 'https://api.im.jpush.cn';
 
     /**
      * @var string
      */
-    private $reportHost = 'https://report.im.jpush.cn';
+    public static $reportHost = 'https://report.im.jpush.cn';
 
     /**
      * @param $method
      * @param $action
      * @param array $params
-     * @param bool  $report
-     *
-     * @throws GuzzleException
+     * @param bool $report
      *
      * @return string
+     * @throws GuzzleException
+     *
      */
     public function send($method, $action, array $params = [], $report = false)
     {
-        $url = $this->buildHost($action, $report);
+        $url    = $this->buildHost(Str::removeFristSlash($action), $report);
         $method = strtoupper($method);
         if ($method == 'UPLOAD') {
             return $this->upload($url, $params['file']);
@@ -73,7 +75,7 @@ class JiguangClient extends BaseClient
      */
     private function upload($uri, $filepath)
     {
-        $ch = curl_init();
+        $ch      = curl_init();
         $options = [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => true,
@@ -93,12 +95,12 @@ class JiguangClient extends BaseClient
         ];
         if (class_exists('\CURLFile')) {
             $options[CURLOPT_SAFE_UPLOAD] = true;
-            $options[CURLOPT_POSTFIELDS] = ['filename' => new \CURLFile($filepath)];
+            $options[CURLOPT_POSTFIELDS]  = ['filename' => new CURLFile($filepath)];
         } else {
             if (defined('CURLOPT_SAFE_UPLOAD')) {
                 $options[CURLOPT_SAFE_UPLOAD] = false;
             }
-            $options[CURLOPT_POSTFIELDS] = ['filename' => '@'.$filepath];
+            $options[CURLOPT_POSTFIELDS] = ['filename' => '@' . $filepath];
         }
         curl_setopt_array($ch, $options);
         $output = curl_exec($ch);
@@ -116,10 +118,10 @@ class JiguangClient extends BaseClient
     private function buildHost($action, $report = false)
     {
         if ($report) {
-            return $this->config['reportHost'] ?? $this->reportHost.'/'.$action;
+            return JiguangClient::$reportHost . '/' . $action;
         }
 
-        return $this->config['host'] ?? $this->host.'/'.$action;
+        return JiguangClient::$host . '/' . $action;
     }
 
     /**
@@ -145,6 +147,6 @@ class JiguangClient extends BaseClient
      */
     private function getAuth()
     {
-        return $this->config['appKey'].':'.$this->config['masterSecret'];
+        return $this->config['appKey'] . ':' . $this->config['masterSecret'];
     }
 }

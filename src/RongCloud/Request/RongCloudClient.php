@@ -9,11 +9,12 @@ namespace whereof\easyIm\RongCloud\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
+use whereof\easyIm\Kernel\Support\Str;
 
 /**
  * 融云IM 即时通讯客户端
  * https://www.rongcloud.cn/product/im
- * https://docs.rongcloud.cn/v4/views/im/server/security/include.html.
+ * https://doc.rongcloud.cn/imserver/server/v1/security/include.
  *
  * $config = [
  *  'appKey' => '',
@@ -28,7 +29,7 @@ class RongCloudClient extends BaseClient
     /**
      * @var string
      */
-    protected $host = 'http://api.cn.ronghub.com';
+    public static $host = 'http://api.cn.ronghub.com';
 
     /**
      * @param $action
@@ -41,8 +42,7 @@ class RongCloudClient extends BaseClient
     public function send($action, $params)
     {
         $this->config['http']['http_errors'] = false;
-
-        $url = $this->config['host'] ?? $this->host.'/'.$action;
+        $url = RongCloudClient::$host.'/'.Str::removeFristSlash($action);
         $headers = $this->buildHeaders();
 
         return $this->httpPost($url, $params, $headers);

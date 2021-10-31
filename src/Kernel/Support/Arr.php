@@ -21,7 +21,7 @@ class Arr
      *
      * @param $ids
      * @param string $idKey
-     * @param array  $expand
+     * @param array $expand
      *
      * @return array
      */
@@ -38,7 +38,6 @@ class Arr
                 $newArr[] = array_merge($item, $expand);
             }
         }
-
         return $newArr;
     }
 }

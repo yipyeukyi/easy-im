@@ -38,18 +38,18 @@ class BaseClient
      */
     public function __construct(ServiceContainer $app)
     {
-        $this->app = $app;
+        $this->app    = $app;
         $this->config = $app->getConfig();
     }
 
     /**
      * @param string $url
-     * @param array  $query
-     * @param array  $headers
-     *
-     * @throws GuzzleException
+     * @param array $query
+     * @param array $headers
      *
      * @return string
+     * @throws GuzzleException
+     *
      */
     protected function httpGet(string $url, array $query = [], array $headers = [])
     {
@@ -63,12 +63,12 @@ class BaseClient
 
     /**
      * @param string $url
-     * @param array  $params
-     * @param array  $headers
-     *
-     * @throws GuzzleException
+     * @param array $params
+     * @param array $headers
      *
      * @return string
+     * @throws GuzzleException
+     *
      */
     protected function httpPost(string $url, array $params = [], array $headers = [])
     {
@@ -82,12 +82,12 @@ class BaseClient
 
     /**
      * @param string $url
-     * @param array  $params
-     * @param array  $headers
-     *
-     * @throws GuzzleException
+     * @param array $params
+     * @param array $headers
      *
      * @return string
+     * @throws GuzzleException
+     *
      */
     protected function httpPostJson(string $url, array $params = [], array $headers = [])
     {
@@ -104,15 +104,15 @@ class BaseClient
      * @param $url
      * @param $options
      *
+     * @return string
      * @throws GuzzleException
      *
-     * @return string
      */
     protected function httpRequest($method, $url, $options)
     {
         $output = $this->httpClient()->request($method, $url, $options);
-        $resp = $output->getBody()->getContents();
-        $this->log($method.':'.$url, ['request' => $options, 'response' => $resp]);
+        $resp   = $output->getBody()->getContents();
+        $this->log($method . ':' . $url, ['request' => $options, 'response' => $resp]);
 
         return $resp;
     }
@@ -131,7 +131,7 @@ class BaseClient
      */
     protected function log($message, $context = [])
     {
-        $conf = array_merge($this->config['log'], [
+        $conf = array_merge($this->config['log'] ?? [], [
             'logfile' => './.runtime/easy-im.log',
         ]);
         BaseClient::$request_log && Logger::File($conf)->debug($message, $context);

@@ -9,6 +9,7 @@ namespace whereof\easyIm\Yunxin\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
+use whereof\easyIm\Kernel\Support\Str;
 
 /**
  * 网易云信 客户端
@@ -20,7 +21,6 @@ use whereof\easyIm\Kernel\BaseClient;
  *  'appSecret' => '',
  * ]
  * Class YunxinClient
- *
  * @author zhiqiang
  */
 class YunxinClient extends BaseClient
@@ -28,22 +28,32 @@ class YunxinClient extends BaseClient
     /**
      * @var string
      */
-    protected $host = 'https://api.netease.im';
+    public static $host = 'https://api.netease.im';
 
     /**
      * @param $action
      * @param $params
      *
+     * @return string
      * @throws GuzzleException
      *
-     * @return string
      */
     public function send($action, $params)
     {
-        $url = $this->config['host'] ?? $this->host.'/';
+        $url     = $this->buildHost(Str::removeFristSlash($action));
         $headers = $this->buildHeaders();
 
-        return $this->httpPost($url.$action, $params, $headers);
+        return $this->httpPost($url, $params, $headers);
+    }
+
+    /**
+     * @param $action
+     *
+     * @return string
+     */
+    public function buildHost($action)
+    {
+        return YunxinClient::$host . '/' . $action;
     }
 
     /**
@@ -51,9 +61,9 @@ class YunxinClient extends BaseClient
      */
     private function buildHeaders()
     {
-        $nonce = uniqid('easyIm_');
-        $curTime = (string) (time());
-        $checkSum = sha1($this->config['appSecret'].$nonce.$curTime);
+        $nonce       = uniqid('easyIm_');
+        $curTime     = (string)(time());
+        $checkSum    = sha1($this->config['appSecret'] . $nonce . $curTime);
         $http_header = [
             'AppKey'       => $this->config['appKey'],
             'Nonce'        => $nonce,
@@ -61,7 +71,6 @@ class YunxinClient extends BaseClient
             'CheckSum'     => $checkSum,
             'Content-Type' => 'application/x-www-form-urlencoded;charset=utf-8',
         ];
-
         return $http_header;
     }
 }

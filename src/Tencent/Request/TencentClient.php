@@ -9,6 +9,8 @@ namespace whereof\easyIm\Tencent\Request;
 
 use GuzzleHttp\Exception\GuzzleException;
 use whereof\easyIm\Kernel\BaseClient;
+use whereof\easyIm\Kernel\Support\Str;
+
 
 /**
  * 腾讯即时通信 IM 客户端
@@ -20,17 +22,16 @@ use whereof\easyIm\Kernel\BaseClient;
  *  'identifier' => '',
  *  'secretKey' => '',
  * ];
- *
- * Class Client
- *
+ * Class TencentClient
  * @author zhiqiang
+ * @package whereof\easyIm\Tencent\Request
  */
 class TencentClient extends BaseClient
 {
     /**
      * @var string
      */
-    protected $host = 'https://console.tim.qq.com';
+    public static $host = 'https://console.tim.qq.com';
 
     /**
      * @var string
@@ -54,7 +55,7 @@ class TencentClient extends BaseClient
      */
     public function send($action, $params)
     {
-        $url = $this->buildHost($action);
+        $url = $this->buildHost(Str::removeFristSlash($action));
 
         return $this->httpPostJson($url, $params);
     }
@@ -69,11 +70,12 @@ class TencentClient extends BaseClient
         $query = http_build_query([
             'sdkappid'    => $this->config['appId'],
             'identifier'  => $this->config['identifier'],
-            'usersig'     => $this->userSig(),
+            'usersig'     => $this->userSig($this->config['identifier'], $this->config['appId'], $this->config['secretKey']),
             'random'      => mt_rand(0, 4294967295),
             'contenttype' => $this->contentType,
         ]);
-        $url = $this->config['host'] ?? $this->host;
+        $url = TencentClient::$host;
+        // 是否携带版本v4
         if (strpos($action, $this->version) !== false) {
             $url .= '/'.$action;
         } else {
@@ -86,25 +88,28 @@ class TencentClient extends BaseClient
     /**
      * 签名算法生成.
      *
-     * @param $expire
+     * @param $identifier
+     * @param $appId
+     * @param $secretKey
+     * @param int $expire
      *
      * @return string
      */
-    private function userSig($expire = 15552000)
+    private function userSig($identifier, $appId, $secretKey, $expire = 15552000)
     {
         $curr_time = time();
         $sig_array = [
             'TLS.ver'        => '2.0',
-            'TLS.identifier' => strval($this->config['identifier']),
-            'TLS.sdkappid'   => intval($this->config['appId']),
+            'TLS.identifier' => strval($identifier),
+            'TLS.sdkappid'   => intval($appId),
             'TLS.expire'     => intval($expire),
             'TLS.time'       => intval($curr_time),
         ];
-        $content_to_be_signed = 'TLS.identifier:'.$this->config['identifier']."\n"
-            .'TLS.sdkappid:'.$this->config['appId']."\n"
+        $content_to_be_signed = 'TLS.identifier:'.$identifier."\n"
+            .'TLS.sdkappid:'.$appId."\n"
             .'TLS.time:'.$curr_time."\n"
             .'TLS.expire:'.$expire."\n";
-        $sig_array['TLS.sig'] = base64_encode(hash_hmac('sha256', $content_to_be_signed, $this->config['secretKey'], true));
+        $sig_array['TLS.sig'] = base64_encode(hash_hmac('sha256', $content_to_be_signed, $secretKey, true));
         $compressed = gzcompress(json_encode($sig_array));
         $replace = ['+' => '*', '/' => '-', '=' => '_'];
 
