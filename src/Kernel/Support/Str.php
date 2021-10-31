@@ -13,8 +13,8 @@ namespace whereof\easyIm\Kernel\Support;
  */
 class Str
 {
+
     /**
-     * 去掉第一位为/字符串.
      * @param $str
      * @return bool|string
      */
