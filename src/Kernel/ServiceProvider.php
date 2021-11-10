@@ -10,6 +10,7 @@ namespace whereof\easyIm\Kernel;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use whereof\easyIm\Kernel\Clients\CacheClient;
+use whereof\easyIm\Kernel\Clients\LoggerClient;
 
 /**
  * Class ServiceProvider.
@@ -30,6 +31,9 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $app['cache'] = function ($app) {
             return new CacheClient($app);
+        };
+        $app['logger'] = function ($app) {
+            return new LoggerClient($app);
         };
     }
 }

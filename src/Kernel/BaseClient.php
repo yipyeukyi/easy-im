@@ -18,6 +18,7 @@ use whereof\Logger\Logger;
  */
 class BaseClient
 {
+    use HttpClient;
     /**
      * @var bool
      */
@@ -42,98 +43,14 @@ class BaseClient
         $this->config = $app->getConfig();
     }
 
-    /**
-     * @param string $url
-     * @param array $query
-     * @param array $headers
-     *
-     * @return string
-     * @throws GuzzleException
-     *
-     */
-    protected function httpGet(string $url, array $query = [], array $headers = [])
-    {
-        $options = [
-            'headers' => $headers,
-            'query'   => $query,
-        ];
-
-        return $this->httpRequest('GET', $url, $options);
-    }
-
-    /**
-     * @param string $url
-     * @param array $params
-     * @param array $headers
-     *
-     * @return string
-     * @throws GuzzleException
-     *
-     */
-    protected function httpPost(string $url, array $params = [], array $headers = [])
-    {
-        $options = [
-            'headers'     => $headers,
-            'form_params' => $params,
-        ];
-
-        return $this->httpRequest('POST', $url, $options);
-    }
-
-    /**
-     * @param string $url
-     * @param array $params
-     * @param array $headers
-     *
-     * @return string
-     * @throws GuzzleException
-     *
-     */
-    protected function httpPostJson(string $url, array $params = [], array $headers = [])
-    {
-        $options = [
-            'headers' => $headers,
-            'json'    => $params,
-        ];
-
-        return $this->httpRequest('POST', $url, $options);
-    }
-
-    /**
-     * @param $method
-     * @param $url
-     * @param $options
-     *
-     * @return string
-     * @throws GuzzleException
-     *
-     */
-    protected function httpRequest($method, $url, $options)
-    {
-        $output = $this->httpClient()->request($method, $url, $options);
-        $resp   = $output->getBody()->getContents();
-        $this->log($method . ':' . $url, ['request' => $options, 'response' => $resp]);
-
-        return $resp;
-    }
-
-    /**
-     * @return Client
-     */
-    protected function httpClient()
-    {
-        return new Client($this->config['http'] ?? []);
-    }
 
     /**
      * @param $message
-     * @param array $context
+     * @param $request
+     * @param $response
      */
-    protected function log($message, $context = [])
+    public function requestLog($message, $request, $response)
     {
-        $conf = array_merge($this->config['log'] ?? [], [
-            'logfile' => './.runtime/easy-im.log',
-        ]);
-        BaseClient::$request_log && Logger::File($conf)->debug($message, $context);
+        BaseClient::$request_log && $this->app->logger->debug($message, ['request' => $request, 'response' => $response]);
     }
 }

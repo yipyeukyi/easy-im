@@ -11,10 +11,9 @@ use Pimple\Container;
 
 /**
  * Class ServiceContainer.
- *
  * @author zhiqiang
- *
  * @property Clients\CacheClient cache
+ * @property Clients\LoggerClient logger
  */
 class ServiceContainer extends Container
 {

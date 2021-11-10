@@ -25,17 +25,17 @@ class Arr
      *
      * @return array
      */
-    public static function buildItem($ids, string $idKey, array $expand = [])
+    public static function buildItem($ids, $idKey, array $expand = [])
     {
         $newArr = [];
         if (is_string($ids) || is_numeric($ids)) {
             $item[$idKey] = $ids;
-            $newArr[] = array_merge($item, $expand);
+            $newArr[]     = array_merge($item, $expand);
         }
         if (is_array($ids)) {
             foreach ($ids as $uid) {
                 $item[$idKey] = $uid;
-                $newArr[] = array_merge($item, $expand);
+                $newArr[]     = array_merge($item, $expand);
             }
         }
         return $newArr;
