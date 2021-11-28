@@ -13,10 +13,18 @@ use GuzzleHttp\Exception\GuzzleException;
 trait HttpClient
 {
     /**
+     * @var array
+     */
+    protected $guzzleConfig = [
+        'headers'=>[
+            'User-Agent' => 'easy-im (https://github.com/whereof/easy-im)',
+        ]
+    ];
+
+    /**
      * @param string $url
      * @param array $query
      * @param array $headers
-     *
      * @return string
      * @throws GuzzleException
      *
@@ -35,7 +43,6 @@ trait HttpClient
      * @param string $url
      * @param array $params
      * @param array $headers
-     *
      * @return string
      * @throws GuzzleException
      *
@@ -54,7 +61,6 @@ trait HttpClient
      * @param string $url
      * @param array $params
      * @param array $headers
-     *
      * @return string
      * @throws GuzzleException
      *
@@ -73,7 +79,6 @@ trait HttpClient
      * @param $method
      * @param $url
      * @param $options
-     *
      * @return string
      * @throws GuzzleException
      *
@@ -91,6 +96,6 @@ trait HttpClient
      */
     protected function httpClient()
     {
-        return new Client($this->config['http'] ?? []);
+        return new Client(array_merge($this->config['http'], $this->guzzleConfig));
     }
 }
